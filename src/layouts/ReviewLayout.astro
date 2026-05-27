@@ -1,0 +1,73 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
+import Breadcrumb from '@/components/common/Breadcrumb.astro';
+import ReviewBox from '@/components/affiliate/ReviewBox.astro';
+import CTAButton from '@/components/affiliate/CTAButton.astro';
+import { buildReviewSchema, buildProductSchema } from '@/lib/seo';
+import { AFFILIATE_DISCLOSURE } from '@/config/affiliate';
+
+interface Props {
+  title: string;
+  description: string;
+  publishedAt: string;
+  updatedAt?: string;
+  image?: string;
+  rating: number;
+  affiliateUrl: string;
+  affiliateSlug: string;
+  price?: string;
+  pros?: string[];
+  cons?: string[];
+  verdict?: string;
+  brand?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+}
+
+const {
+  title, description, publishedAt, updatedAt, image, rating,
+  affiliateUrl, affiliateSlug, price, pros = [], cons = [], verdict = '',
+  brand, breadcrumbs,
+} = Astro.props;
+
+const schemas = [
+  buildReviewSchema({ itemName: title, rating, reviewBody: description, url: Astro.url.href, publishedAt }),
+  buildProductSchema({ name: title, description, url: Astro.url.href, rating, image, brand }),
+];
+---
+
+<BaseLayout {title} {description} {image} schema={schemas}>
+  <div class="container py-8">
+    {breadcrumbs && <Breadcrumb items={breadcrumbs} />}
+
+    <div class="layout-with-sidebar">
+      <div>
+        <p class="disclosure-banner">{AFFILIATE_DISCLOSURE}</p>
+        <AdBanner />
+
+        <article class="prose prose-gray max-w-none mt-6">
+          <slot />
+        </article>
+
+        <ReviewBox
+          name={title}
+          {rating}
+          summary={description}
+          {pros}
+          {cons}
+          {verdict}
+          {affiliateSlug}
+          {affiliateUrl}
+          {price}
+        />
+
+        <div class="my-8 text-center">
+          <CTAButton href={affiliateUrl} slug={affiliateSlug} text="Check Best Price →" variant="primary" />
+        </div>
+      </div>
+
+      <Sidebar />
+    </div>
+  </div>
+</BaseLayout>

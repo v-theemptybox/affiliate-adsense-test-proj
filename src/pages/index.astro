@@ -1,0 +1,114 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Card from '@/components/common/Card.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { SITE } from '@/config/site';
+import { getCollection } from 'astro:content';
+
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 3);
+
+const topReviews = (await getCollection('reviews'))
+  .sort((a, b) => b.data.rating - a.data.rating)
+  .slice(0, 2);
+
+const bestPicks = (await getCollection('best'))
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 2);
+---
+
+<BaseLayout description={SITE.description}>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="hero-tag">Home & Living</span>
+    <h1>Make Your Home<br />a Place You Love</h1>
+    <p>Curated reviews, buying guides, and decor ideas — tested in real homes by real people.</p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="/best" class="cta-button cta-button--primary">Browse Best Picks</a>
+      <a href="/reviews" class="cta-button cta-button--secondary" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+        Read Reviews
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured strip -->
+  <div class="featured-strip">
+    <div class="container flex items-center gap-8 overflow-x-auto text-sm" style="color:var(--color-muted);">
+      <span class="font-semibold whitespace-nowrap" style="color:var(--color-text);">Popular Topics:</span>
+      {['Robot Vacuums', 'Air Purifiers', 'Living Room', 'Indoor Plants', 'Smart Home'].map(tag => (
+        <a href={`/search?q=${tag.toLowerCase().replace(' ','+')}`}
+           class="whitespace-nowrap no-underline hover:underline"
+           style="color:var(--color-muted);">{tag}</a>
+      ))}
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Top Reviews -->
+    {topReviews.length > 0 && (
+      <section class="section">
+        <h2 class="section-title">Expert Reviews</h2>
+        <p class="section-sub">Tested in real homes, no sponsored opinions</p>
+        <div class="card-grid">
+          {topReviews.map(review => (
+            <Card
+              title={review.data.title}
+              description={review.data.description}
+              href={`/reviews/${review.slug}`}
+              image={review.data.image}
+              badge={`${review.data.rating}/5 ★`}
+            />
+          ))}
+        </div>
+        <a href="/reviews" class="see-all">All reviews →</a>
+      </section>
+    )}
+
+    <AdBanner />
+
+    <!-- Best Picks -->
+    {bestPicks.length > 0 && (
+      <section class="section">
+        <h2 class="section-title">Best Picks</h2>
+        <p class="section-sub">The definitive buying guides for every room</p>
+        <div class="card-grid">
+          {bestPicks.map(pick => (
+            <Card
+              title={pick.data.title}
+              description={pick.data.description}
+              href={`/best/${pick.slug}`}
+              image={pick.data.image}
+              badge={pick.data.category}
+            />
+          ))}
+        </div>
+        <a href="/best" class="see-all">All buying guides →</a>
+      </section>
+    )}
+
+    <!-- Blog -->
+    {recentPosts.length > 0 && (
+      <section class="section">
+        <h2 class="section-title">Ideas & Inspiration</h2>
+        <p class="section-sub">Design tips and home improvement guides</p>
+        <div class="card-grid">
+          {recentPosts.map(post => (
+            <Card
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug}`}
+              image={post.data.image}
+              date={post.data.publishedAt}
+            />
+          ))}
+        </div>
+        <a href="/blog" class="see-all">All ideas →</a>
+      </section>
+    )}
+
+    <AdBanner />
+  </div>
+</BaseLayout>

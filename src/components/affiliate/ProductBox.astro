@@ -1,0 +1,34 @@
+---
+import CTAButton from './CTAButton.astro';
+
+interface Props {
+  name: string;
+  description: string;
+  image?: string;
+  price?: string;
+  rating?: number;
+  affiliateSlug: string;
+  affiliateUrl: string;
+  badge?: string;
+}
+
+const { name, description, image, price, rating, affiliateSlug, affiliateUrl, badge } = Astro.props;
+const stars = rating ? Math.round(rating) : 0;
+---
+
+<div class="product-box">
+  {badge && <span class="product-badge">{badge}</span>}
+  {image && <img src={image} alt={name} loading="lazy" class="w-full h-48 object-contain mb-4" />}
+  <div class="product-info">
+    <h3>{name}</h3>
+    <p class="text-sm text-gray-600 mb-3">{description}</p>
+    {rating && (
+      <div class="product-rating" aria-label={`Rating: ${rating}/5`}>
+        {'★'.repeat(stars)}{'☆'.repeat(5 - stars)}
+        <span class="text-sm text-gray-500 ml-1">{rating}/5</span>
+      </div>
+    )}
+    {price && <div class="product-price">{price}</div>}
+    <CTAButton href={affiliateUrl} slug={affiliateSlug} text="Check Price →" />
+  </div>
+</div>

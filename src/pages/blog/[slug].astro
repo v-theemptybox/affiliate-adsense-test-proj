@@ -1,0 +1,28 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', p => !p.data.noindex);
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogLayout
+  title={post.data.title}
+  description={post.data.description}
+  publishedAt={post.data.publishedAt}
+  updatedAt={post.data.updatedAt}
+  image={post.data.image}
+  author={post.data.author}
+  breadcrumbs={[{ label: 'Blog', href: '/blog' }, { label: post.data.title }]}
+>
+  <h1>{post.data.title}</h1>
+  <Content />
+</BlogLayout>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  href: string;
+  image?: string;
+  badge?: string;
+  date?: string;
+}
+
+const { title, description, href, image, badge, date } = Astro.props;
+---
+
+<article class="card">
+  <a href={href} class="block no-underline text-inherit">
+    {image && (
+      <img src={image} alt={title} loading="lazy" class="card-image" />
+    )}
+    <div class="card-body">
+      {badge && <span class="card-badge">{badge}</span>}
+      <h3 class="card-title">{title}</h3>
+      {description && <p class="card-description">{description}</p>}
+      {date && <time class="card-date">{new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>}
+    </div>
+  </a>
+</article>

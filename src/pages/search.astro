@@ -1,0 +1,77 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Card from '@/components/common/Card.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { getCollection } from 'astro:content';
+
+const query = Astro.url.searchParams.get('q')?.toLowerCase() ?? '';
+
+const allContent = [
+  ...(await getCollection('blog')).map(p => ({
+    title: p.data.title,
+    description: p.data.description ?? '',
+    href: `/blog/${p.slug}`,
+    type: 'Blog',
+  })),
+  ...(await getCollection('reviews')).map(p => ({
+    title: p.data.title,
+    description: p.data.description ?? '',
+    href: `/reviews/${p.slug}`,
+    type: 'Review',
+  })),
+  ...(await getCollection('best')).map(p => ({
+    title: p.data.title,
+    description: p.data.description ?? '',
+    href: `/best/${p.slug}`,
+    type: 'Best Pick',
+  })),
+];
+
+const results = query
+  ? allContent.filter(
+      item =>
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query)
+    )
+  : [];
+---
+
+<BaseLayout title="Search" noindex={true}>
+  <div class="container py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Search</h1>
+
+    <form method="get" action="/search" class="flex gap-2 mb-8">
+      <input
+        type="search"
+        name="q"
+        value={query}
+        placeholder="Search reviews, articles, guides..."
+        class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        autofocus
+      />
+      <button type="submit" class="cta-button cta-button--primary px-6 py-2 text-sm">
+        Search
+      </button>
+    </form>
+
+    <AdBanner />
+
+    {query && (
+      <p class="text-sm text-gray-500 mb-4">
+        {results.length} result{results.length !== 1 ? 's' : ''} for "<strong>{query}</strong>"
+      </p>
+    )}
+
+    {results.length > 0 && (
+      <div class="card-grid mt-4">
+        {results.map(r => (
+          <Card title={r.title} description={r.description} href={r.href} badge={r.type} />
+        ))}
+      </div>
+    )}
+
+    {query && results.length === 0 && (
+      <p class="text-gray-400 text-center py-16">No results found. Try a different search term.</p>
+    )}
+  </div>
+</BaseLayout>

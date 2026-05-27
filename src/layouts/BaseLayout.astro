@@ -1,0 +1,88 @@
+---
+import { SITE } from '@/config/site';
+import { ADSENSE } from '@/config/adsense';
+import { injectGA } from '@/lib/tracking';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+  image?: string;
+  schema?: object | object[];
+}
+
+const { title, description, canonical, noindex = false, image, schema } = Astro.props;
+
+const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
+const metaDescription = description || SITE.description;
+const canonicalUrl = canonical || Astro.url.href;
+const ogImage = image || SITE.defaultOgImage;
+
+const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+---
+
+<!doctype html>
+<html lang={SITE.locale.split('-')[0]}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={metaDescription} />
+    {noindex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <meta name="robots" content="index, follow" />
+    }
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${SITE.url}${ogImage}`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SITE.twitterHandle} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={`${SITE.url}${ogImage}`} />
+
+    {schemas.map(s => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
+
+    {ADSENSE.enabled && (
+      <script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE.publisherId}`}
+        crossorigin="anonymous"
+      />
+    )}
+
+    {SITE.googleAnalyticsId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.googleAnalyticsId}`} />
+        <script set:html={injectGA(SITE.googleAnalyticsId)} />
+      </>
+    )}
+
+    <!-- Google Fonts: Playfair Display (headings) + Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

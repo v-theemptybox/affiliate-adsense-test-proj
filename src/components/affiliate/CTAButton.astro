@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  text: string;
+  slug?: string;
+  variant?: 'primary' | 'secondary';
+  nofollow?: boolean;
+}
+
+const { href, text, slug, variant = 'primary', nofollow = true } = Astro.props;
+const finalHref = slug ? `/go/${slug}` : href;
+const rel = nofollow ? 'nofollow noopener sponsored' : 'noopener noreferrer';
+---
+
+<a
+  href={finalHref}
+  rel={rel}
+  target="_blank"
+  class={`cta-button cta-button--${variant}`}
+  data-affiliate-slug={slug}
+>
+  {text}
+</a>
+
+{slug && (
+  <script>
+    document.querySelectorAll('[data-affiliate-slug]').forEach(el => {
+      el.addEventListener('click', () => {
+        const s = (el as HTMLElement).dataset.affiliateSlug;
+        if (s) {
+          import('/src/lib/tracking.ts').then(m =>
+            m.trackAffiliateClick(s, (el as HTMLAnchorElement).href)
+          ).catch(() => {});
+        }
+      });
+    });
+  </script>
+)}

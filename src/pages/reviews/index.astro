@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Card from '@/components/common/Card.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { getCollection } from 'astro:content';
+
+const reviews = (await getCollection('reviews'))
+  .sort((a, b) => b.data.rating - a.data.rating);
+---
+
+<BaseLayout title="Product Reviews" description="In-depth, unbiased product reviews with affiliate links to the best deals.">
+  <div class="container py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Product Reviews</h1>
+    <p class="text-gray-500 mb-8">Honest, in-depth reviews to help you decide.</p>
+    <AdBanner />
+    <div class="card-grid mt-8">
+      {reviews.map(review => (
+        <Card
+          title={review.data.title}
+          description={review.data.description}
+          href={`/reviews/${review.slug}`}
+          image={review.data.image}
+          badge={`${review.data.rating}/5 ★`}
+        />
+      ))}
+    </div>
+    {reviews.length === 0 && (
+      <p class="text-gray-400 text-center py-20">No reviews yet. Check back soon.</p>
+    )}
+  </div>
+</BaseLayout>

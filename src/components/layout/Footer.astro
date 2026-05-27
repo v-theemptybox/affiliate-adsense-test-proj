@@ -1,0 +1,49 @@
+---
+import { SITE } from '@/config/site';
+import { AFFILIATE_DISCLOSURE } from '@/config/affiliate';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer-dark mt-20">
+  <div class="container py-14">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-2xl">🏡</span>
+          <span style="font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:1.25rem; color:#fff;">
+            {SITE.name}
+          </span>
+        </div>
+        <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.55); max-width:280px;">
+          {SITE.description}
+        </p>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(255,255,255,0.4);">Explore</h4>
+        <ul class="space-y-2.5 text-sm list-none p-0">
+          <li><a href="/blog" class="no-underline transition-colors" style="color:rgba(255,255,255,0.65);" onmouseover="this.style.color='#e8a87c'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Ideas & Inspiration</a></li>
+          <li><a href="/reviews" class="no-underline transition-colors" style="color:rgba(255,255,255,0.65);">Reviews</a></li>
+          <li><a href="/best" class="no-underline transition-colors" style="color:rgba(255,255,255,0.65);">Best Picks</a></li>
+          <li><a href="/vs" class="no-underline transition-colors" style="color:rgba(255,255,255,0.65);">Comparisons</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest mb-4" style="color:rgba(255,255,255,0.4);">Company</h4>
+        <ul class="space-y-2.5 text-sm list-none p-0">
+          <li><a href="/about" class="no-underline" style="color:rgba(255,255,255,0.65);">About Us</a></li>
+          <li><a href="/privacy" class="no-underline" style="color:rgba(255,255,255,0.65);">Privacy Policy</a></li>
+          <li><a href="/terms" class="no-underline" style="color:rgba(255,255,255,0.65);">Terms of Use</a></li>
+          <li><a href="/contact" class="no-underline" style="color:rgba(255,255,255,0.65);">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t pt-8 space-y-3" style="border-color:rgba(255,255,255,0.1);">
+      <p class="text-xs" style="color:rgba(255,255,255,0.35);">{AFFILIATE_DISCLOSURE}</p>
+      <p class="text-xs" style="color:rgba(255,255,255,0.25);">&copy; {year} {SITE.name}. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

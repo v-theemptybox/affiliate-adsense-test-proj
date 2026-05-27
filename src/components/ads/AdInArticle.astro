@@ -1,0 +1,17 @@
+---
+import { ADSENSE } from '@/config/adsense';
+---
+
+{ADSENSE.enabled && (
+  <div class="ad-container ad-in-article">
+    <ins
+      class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client={ADSENSE.publisherId}
+      data-ad-slot={ADSENSE.slots.inArticle}
+    />
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+)}

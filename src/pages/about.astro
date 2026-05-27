@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import { AFFILIATE_DISCLOSURE } from '@/config/affiliate';
+---
+
+<BaseLayout title="About Us" description={`Learn about ${SITE.name} and how we test and review products.`}>
+  <div class="container py-12 max-w-3xl">
+    <h1 class="text-4xl font-bold text-gray-900 mb-6">About {SITE.name}</h1>
+
+    <div class="prose prose-gray max-w-none">
+      <p>
+        We are a team of researchers and writers dedicated to helping you make the best purchasing decisions.
+        Every recommendation is backed by extensive research, testing, and real-world use.
+      </p>
+
+      <h2>How We Review</h2>
+      <p>
+        Our review process involves hands-on testing where possible, analysis of thousands of user reviews,
+        and consultation with subject matter experts. We consider performance, value, durability, and
+        user experience in every evaluation.
+      </p>
+
+      <h2>Affiliate Disclosure</h2>
+      <p>{AFFILIATE_DISCLOSURE}</p>
+      <p>
+        This never influences our editorial decisions. We recommend products we genuinely believe are
+        the best options for our readers.
+      </p>
+
+      <h2>Contact Us</h2>
+      <p>
+        Have a question or suggestion? Reach us at{' '}
+        <a href={`mailto:contact@${new URL(SITE.url).hostname}`}>
+          contact@{new URL(SITE.url).hostname}
+        </a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>

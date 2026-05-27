@@ -1,0 +1,28 @@
+---
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { ADSENSE } from '@/config/adsense';
+import { getCollection } from 'astro:content';
+
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 5);
+---
+
+<aside class="sidebar">
+  <AdBanner slot={ADSENSE.slots.sidebar} />
+
+  {recentPosts.length > 0 && (
+    <div class="sidebar-widget">
+      <h3>Recent Posts</h3>
+      <ul>
+        {recentPosts.map(post => (
+          <li>
+            <a href={`/blog/${post.slug}`} class="text-gray-700 hover:text-blue-600 text-sm">
+              {post.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</aside>

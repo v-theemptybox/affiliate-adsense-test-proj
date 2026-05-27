@@ -1,0 +1,79 @@
+---
+import CTAButton from './CTAButton.astro';
+
+interface Product {
+  name: string;
+  price: string;
+  rating: number;
+  pros: string[];
+  cons: string[];
+  affiliateSlug: string;
+  affiliateUrl: string;
+  badge?: string;
+}
+
+interface Props {
+  products: Product[];
+}
+
+const { products } = Astro.props;
+---
+
+<div class="comparison-table-wrapper my-8">
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        {products.map(p => (
+          <th>
+            {p.name}
+            {p.badge && <span class="ml-2 text-xs bg-amber-400 text-gray-900 px-2 py-0.5 rounded-full font-normal">{p.badge}</span>}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="font-medium">Price</td>
+        {products.map(p => <td>{p.price}</td>)}
+      </tr>
+      <tr>
+        <td class="font-medium">Rating</td>
+        {products.map(p => (
+          <td>
+            <span class="text-amber-400">{'★'.repeat(Math.round(p.rating))}</span>
+            <span class="text-sm text-gray-500 ml-1">{p.rating}/5</span>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <td class="font-medium">Pros</td>
+        {products.map(p => (
+          <td>
+            <ul class="space-y-1 text-sm text-green-700">
+              {p.pros.map(pro => <li>✓ {pro}</li>)}
+            </ul>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <td class="font-medium">Cons</td>
+        {products.map(p => (
+          <td>
+            <ul class="space-y-1 text-sm text-red-600">
+              {p.cons.map(con => <li>✗ {con}</li>)}
+            </ul>
+          </td>
+        ))}
+      </tr>
+      <tr>
+        <td></td>
+        {products.map(p => (
+          <td>
+            <CTAButton href={p.affiliateUrl} slug={p.affiliateSlug} text="Check Price" />
+          </td>
+        ))}
+      </tr>
+    </tbody>
+  </table>
+</div>

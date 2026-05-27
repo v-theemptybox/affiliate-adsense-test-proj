@@ -1,0 +1,50 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import AdInArticle from '@/components/ads/AdInArticle.astro';
+import Sidebar from '@/components/layout/Sidebar.astro';
+import Breadcrumb from '@/components/common/Breadcrumb.astro';
+import { buildArticleSchema } from '@/lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  publishedAt: string;
+  updatedAt?: string;
+  image?: string;
+  author?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+}
+
+const { title, description, publishedAt, updatedAt, image, author, breadcrumbs } = Astro.props;
+
+const schema = buildArticleSchema({
+  title,
+  description,
+  url: Astro.url.href,
+  publishedAt,
+  updatedAt,
+  image,
+  author,
+});
+---
+
+<BaseLayout {title} {description} {image} schema={schema}>
+  <div class="container py-8">
+    {breadcrumbs && <Breadcrumb items={breadcrumbs} />}
+
+    <div class="layout-with-sidebar">
+      <div>
+        <AdBanner />
+
+        <article class="prose prose-gray max-w-none mt-6">
+          <slot />
+        </article>
+
+        <AdInArticle />
+      </div>
+
+      <Sidebar />
+    </div>
+  </div>
+</BaseLayout>

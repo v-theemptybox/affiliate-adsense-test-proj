@@ -1,0 +1,29 @@
+---
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import AdInArticle from '@/components/ads/AdInArticle.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const picks = await getCollection('best');
+  return picks.map(pick => ({
+    params: { slug: pick.slug },
+    props: { pick },
+  }));
+}
+
+const { pick } = Astro.props;
+const { Content } = await pick.render();
+---
+
+<LandingLayout
+  title={pick.data.title}
+  description={pick.data.description}
+  image={pick.data.image}
+>
+  <h1 class="text-4xl font-bold text-gray-900 mb-4">{pick.data.title}</h1>
+  <p class="text-lg text-gray-600 mb-8">{pick.data.description}</p>
+  <AdInArticle />
+  <div class="prose prose-gray max-w-none">
+    <Content />
+  </div>
+</LandingLayout>

@@ -1,0 +1,54 @@
+---
+import CTAButton from './CTAButton.astro';
+
+interface Props {
+  name: string;
+  rating: number;
+  summary: string;
+  pros: string[];
+  cons: string[];
+  verdict: string;
+  affiliateSlug: string;
+  affiliateUrl: string;
+  price?: string;
+}
+
+const { name, rating, summary, pros, cons, verdict, affiliateSlug, affiliateUrl, price } = Astro.props;
+const ratingPct = (rating / 5) * 100;
+---
+
+<div class="review-box my-8">
+  <div class="review-header">
+    <div>
+      <h2 class="text-xl font-bold">{name}</h2>
+      {price && <div class="text-2xl font-bold text-gray-900 mt-1">{price}</div>}
+    </div>
+    <div class="review-score">
+      <span class="score-number">{rating}</span><span class="score-max">/5</span>
+      <div class="score-bar"><div class="score-fill" style={`width:${ratingPct}%`} /></div>
+    </div>
+  </div>
+
+  <p class="text-gray-700 mb-4">{summary}</p>
+
+  <div class="pros-cons">
+    <div class="pros">
+      <h4>Pros</h4>
+      <ul>{pros.map(p => <li>✓ {p}</li>)}</ul>
+    </div>
+    <div class="cons">
+      <h4>Cons</h4>
+      <ul>{cons.map(c => <li>✗ {c}</li>)}</ul>
+    </div>
+  </div>
+
+  {verdict && (
+    <div class="review-verdict">
+      <strong>Verdict:</strong> {verdict}
+    </div>
+  )}
+
+  <div class="mt-6">
+    <CTAButton href={affiliateUrl} slug={affiliateSlug} text="Check Best Price →" variant="primary" />
+  </div>
+</div>

@@ -1,0 +1,33 @@
+---
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import AdInArticle from '@/components/ads/AdInArticle.astro';
+import Breadcrumb from '@/components/common/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = await getCollection('vs');
+  return items.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await item.render();
+---
+
+<LandingLayout
+  title={item.data.title}
+  description={item.data.description}
+>
+  <Breadcrumb items={[{ label: 'Comparisons' }, { label: item.data.title }]} />
+  <h1 class="text-4xl font-bold text-gray-900 mb-2">{item.data.title}</h1>
+  <p class="text-gray-500 mb-2">
+    {item.data.product1} vs {item.data.product2}
+    {item.data.winner && <span class="ml-2 text-green-600 font-medium">— Winner: {item.data.winner}</span>}
+  </p>
+  <AdInArticle />
+  <div class="prose prose-gray max-w-none mt-8">
+    <Content />
+  </div>
+</LandingLayout>

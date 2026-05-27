@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Card from '@/components/common/Card.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { getCollection } from 'astro:content';
+
+const picks = (await getCollection('best'))
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime());
+
+const categories = [...new Set(picks.map(p => p.data.category))];
+---
+
+<BaseLayout title="Best Picks" description="Curated lists of the best products in every category.">
+  <div class="container py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Best Picks</h1>
+    <p class="text-gray-500 mb-8">The definitive buying guides across every category.</p>
+
+    {categories.length > 1 && (
+      <div class="flex flex-wrap gap-2 mb-8">
+        {categories.map(cat => (
+          <span class="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded-full">{cat}</span>
+        ))}
+      </div>
+    )}
+
+    <AdBanner />
+
+    <div class="card-grid mt-8">
+      {picks.map(pick => (
+        <Card
+          title={pick.data.title}
+          description={pick.data.description}
+          href={`/best/${pick.slug}`}
+          image={pick.data.image}
+          badge={pick.data.category}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

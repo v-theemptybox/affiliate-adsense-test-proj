@@ -1,0 +1,27 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AdBanner from '@/components/ads/AdBanner.astro';
+import { AFFILIATE_DISCLOSURE } from '@/config/affiliate';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  schema?: object | object[];
+  showDisclosure?: boolean;
+}
+
+const { title, description, image, schema, showDisclosure = true } = Astro.props;
+---
+
+<BaseLayout {title} {description} {image} {schema}>
+  {showDisclosure && (
+    <p class="disclosure-banner">{AFFILIATE_DISCLOSURE}</p>
+  )}
+
+  <div class="container py-8">
+    <AdBanner />
+    <slot />
+    <AdBanner />
+  </div>
+</BaseLayout>

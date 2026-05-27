@@ -1,0 +1,350 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary:     #c17f4f;   /* terracotta */
+    --color-primary-dk:  #9e6238;   /* deep terracotta */
+    --color-accent:      #6b9b72;   /* sage green */
+    --color-accent-lt:   #e8f0e9;   /* pale sage */
+    --color-warm:        #e8a87c;   /* peach amber */
+    --color-text:        #2c1a0e;   /* espresso */
+    --color-muted:       #8a7060;   /* warm taupe */
+    --color-border:      #e8ddd4;   /* warm sand */
+    --color-bg:          #fdf8f3;   /* warm cream */
+    --color-bg-alt:      #f5ede3;   /* deeper cream */
+    --color-card:        #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Inter', system-ui, sans-serif;
+    @apply antialiased leading-relaxed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply leading-tight font-bold;
+    color: var(--color-text);
+  }
+
+  a { color: var(--color-primary); @apply transition-colors duration-200; }
+  a:hover { color: var(--color-primary-dk); }
+
+  ::selection {
+    background: #f5d5be;
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+
+  /* ── Layout ─────────────────────────────────── */
+  .container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .layout-with-sidebar {
+    @apply grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10;
+  }
+
+  /* ── Navigation ─────────────────────────────── */
+  .nav-link {
+    font-family: 'Inter', sans-serif;
+    @apply text-sm font-medium tracking-wide transition-colors duration-200;
+    color: var(--color-muted);
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  /* ── Hero ───────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #3d2314 0%, #6b3a20 40%, #c17f4f 100%);
+    @apply text-white text-center py-24 px-4 relative overflow-hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero > * { position: relative; }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold mb-5;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .hero p {
+    @apply text-lg sm:text-xl max-w-2xl mx-auto mb-8;
+    color: rgba(255,255,255,0.82);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    @apply text-xs font-semibold tracking-widest uppercase px-4 py-1 rounded-full mb-6;
+    color: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── Section ────────────────────────────────── */
+  .section { @apply py-14; }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-2xl sm:text-3xl font-bold mb-2;
+    color: var(--color-text);
+  }
+  .section-sub {
+    @apply text-sm mb-8;
+    color: var(--color-muted);
+  }
+  .see-all {
+    @apply inline-flex items-center gap-1 text-sm font-semibold mt-6;
+    color: var(--color-primary);
+  }
+  .see-all:hover { color: var(--color-primary-dk); text-decoration: none; }
+
+  /* ── Cards ──────────────────────────────────── */
+  .card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    @apply rounded-2xl overflow-hidden transition-all duration-300;
+  }
+  .card:hover {
+    box-shadow: 0 8px 32px rgba(44,26,14,0.10);
+    transform: translateY(-2px);
+  }
+  .card a { text-decoration: none; color: inherit; }
+  .card-image {
+    @apply w-full object-cover;
+    height: 210px;
+  }
+  .card-body { @apply p-5; }
+  .card-badge {
+    display: inline-block;
+    background: var(--color-accent-lt);
+    color: var(--color-accent);
+    @apply text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-3;
+  }
+  .card-badge-warm {
+    background: #fdf0e6;
+    color: var(--color-primary);
+  }
+  .card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-lg font-bold mb-2 leading-snug;
+    color: var(--color-text);
+  }
+  .card-description {
+    @apply text-sm leading-relaxed line-clamp-2;
+    color: var(--color-muted);
+  }
+  .card-date {
+    @apply block text-xs mt-3;
+    color: var(--color-muted);
+    opacity: 0.75;
+  }
+  .card-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  /* ── Rating stars ───────────────────────────── */
+  .stars { color: #d97706; letter-spacing: 1px; }
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef9ec;
+    border: 1px solid #f6d87a;
+    @apply text-xs font-bold px-2 py-0.5 rounded-full;
+    color: #92660a;
+  }
+
+  /* ── CTA Buttons ────────────────────────────── */
+  .cta-button {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200;
+    text-decoration: none;
+  }
+  .cta-button--primary {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .cta-button--primary:hover {
+    background: var(--color-primary-dk);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(193,127,79,0.4);
+  }
+  .cta-button--secondary {
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+  .cta-button--secondary:hover {
+    background: var(--color-border);
+    color: var(--color-text);
+  }
+  .cta-button--accent {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .cta-button--accent:hover {
+    background: #558b5c;
+    color: #fff;
+  }
+
+  /* ── Product Box ────────────────────────────── */
+  .product-box {
+    background: var(--color-card);
+    border: 2px solid var(--color-border);
+    @apply relative rounded-2xl p-6;
+  }
+  .product-box:hover { border-color: var(--color-warm); }
+  .product-badge {
+    position: absolute;
+    top: -12px; left: 20px;
+    background: var(--color-primary);
+    color: #fff;
+    @apply text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide;
+  }
+  .product-info h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-xl font-bold mb-2;
+    color: var(--color-text);
+  }
+  .product-rating { color: #d97706; @apply text-lg mb-1; }
+  .product-price {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-3xl font-bold my-3;
+    color: var(--color-primary);
+  }
+
+  /* ── Review Box ─────────────────────────────── */
+  .review-box {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    @apply rounded-2xl p-6 my-8;
+  }
+  .review-header { @apply flex items-start justify-between mb-4; }
+  .review-score { @apply text-right; }
+  .score-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-5xl font-bold;
+    color: var(--color-primary);
+  }
+  .score-max { @apply text-lg; color: var(--color-muted); }
+  .score-bar {
+    @apply h-2 rounded-full mt-2 w-28;
+    background: var(--color-border);
+  }
+  .score-fill {
+    @apply h-full rounded-full;
+    background: var(--color-primary);
+  }
+  .pros-cons { @apply grid grid-cols-1 sm:grid-cols-2 gap-4 my-5; }
+  .pros h4 { @apply font-semibold mb-2; color: var(--color-accent); }
+  .cons h4 { @apply font-semibold mb-2; color: #c0392b; }
+  .pros ul, .cons ul { @apply text-sm space-y-1 list-none p-0; color: var(--color-text); }
+  .review-verdict {
+    background: #fff;
+    border-left: 4px solid var(--color-primary);
+    @apply p-4 rounded-r-xl my-4 text-sm;
+    color: var(--color-text);
+  }
+  .review-price {
+    font-family: 'Playfair Display', Georgia, serif;
+    @apply text-2xl font-bold mb-4;
+    color: var(--color-primary);
+  }
+
+  /* ── Comparison Table ───────────────────────── */
+  .comparison-table-wrapper { @apply overflow-x-auto my-8; }
+  .comparison-table { @apply w-full border-collapse text-sm; }
+  .comparison-table th {
+    background: var(--color-text);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    @apply px-5 py-3 text-left font-semibold;
+  }
+  .comparison-table th:first-child { border-radius: 12px 0 0 0; }
+  .comparison-table th:last-child { border-radius: 0 12px 0 0; }
+  .comparison-table td {
+    border-bottom: 1px solid var(--color-border);
+    @apply px-5 py-3 align-top;
+    color: var(--color-text);
+  }
+  .comparison-table tr:nth-child(even) td { background: var(--color-bg-alt); }
+
+  /* ── Breadcrumb ─────────────────────────────── */
+  .breadcrumb {
+    @apply flex flex-wrap items-center gap-1 text-xs list-none p-0 my-4;
+    color: var(--color-muted);
+  }
+  .breadcrumb li:not(:last-child)::after { content: '›'; @apply mx-1; opacity: 0.5; }
+  .breadcrumb a { color: var(--color-muted); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  /* ── Sidebar ────────────────────────────────── */
+  .sidebar { @apply space-y-6; }
+  .sidebar-widget {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    @apply rounded-2xl p-5;
+  }
+  .sidebar-widget h3 {
+    font-family: 'Inter', sans-serif;
+    @apply text-xs font-bold uppercase tracking-widest mb-4;
+    color: var(--color-muted);
+  }
+  .sidebar-widget ul { @apply space-y-3 text-sm list-none p-0; }
+  .sidebar-widget li a { color: var(--color-text); }
+  .sidebar-widget li a:hover { color: var(--color-primary); text-decoration: none; }
+
+  /* ── Ads ────────────────────────────────────── */
+  .ad-container { @apply my-8 text-center; }
+  .ad-banner { @apply min-h-[90px]; }
+
+  /* ── Disclosure ─────────────────────────────── */
+  .disclosure-banner {
+    background: #fef9ec;
+    border: 1px solid #f6d87a;
+    @apply text-xs px-4 py-2 rounded-xl text-center mb-6;
+    color: #92660a;
+  }
+
+  /* ── Footer ─────────────────────────────────── */
+  .footer-dark {
+    background: #1e0f08;
+    @apply text-white;
+  }
+
+  /* ── Category pill ──────────────────────────── */
+  .category-pill {
+    @apply inline-block text-xs font-semibold px-4 py-1.5 rounded-full border transition-colors cursor-pointer;
+    border-color: var(--color-border);
+    color: var(--color-muted);
+    background: var(--color-card);
+  }
+  .category-pill:hover, .category-pill.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  /* ── Featured strip ─────────────────────────── */
+  .featured-strip {
+    background: var(--color-bg-alt);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    @apply py-4;
+  }
+}
