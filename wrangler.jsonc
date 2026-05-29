@@ -1,0 +1,37 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "affiliate-adsense-site",
+  "compatibility_date": "2026-01-14",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // D1 database — EmDash lưu trữ content, users, media metadata
+  // Tạo bằng: wrangler d1 create affiliate-cms-db
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "affiliate-cms-db",
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    }
+  ],
+
+  // R2 bucket — EmDash lưu trữ media files (images, files)
+  // Tạo bằng: wrangler r2 bucket create affiliate-cms-media
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "affiliate-cms-media"
+    }
+  ],
+
+  // Worker Loaders cho plugin sandboxing (chỉ dành cho paid plan $5/tháng+)
+  // Xoá block này nếu dùng free plan
+  // "worker_loaders": [
+  //   {
+  //     "binding": "LOADER"
+  //   }
+  // ],
+
+  "observability": {
+    "enabled": true
+  }
+}

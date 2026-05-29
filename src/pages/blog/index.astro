@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Card from '@/components/common/Card.astro';
 import AdBanner from '@/components/ads/AdBanner.astro';
@@ -19,7 +20,7 @@ const posts = (await getCollection('blog'))
         <Card
           title={post.data.title}
           description={post.data.description}
-          href={`/blog/${post.slug}`}
+          href={`/blog/${post.id}`}
           image={post.data.image}
           date={post.data.publishedAt}
         />

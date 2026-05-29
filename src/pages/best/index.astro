@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Card from '@/components/common/Card.astro';
 import AdBanner from '@/components/ads/AdBanner.astro';
@@ -30,7 +31,7 @@ const categories = [...new Set(picks.map(p => p.data.category))];
         <Card
           title={pick.data.title}
           description={pick.data.description}
-          href={`/best/${pick.slug}`}
+          href={`/best/${pick.id}`}
           image={pick.data.image}
           badge={pick.data.category}
         />

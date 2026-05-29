@@ -24,6 +24,12 @@ Thumbs.db
 .vscode/
 .idea/
 
+# EmDash local dev data
+emdash.db
+emdash.db-shm
+emdash.db-wal
+uploads/
+
 # Logs
 *.log
 npm-debug.log*

@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Card from '@/components/common/Card.astro';
 import AdBanner from '@/components/ads/AdBanner.astro';
@@ -57,7 +58,7 @@ const bestPicks = (await getCollection('best'))
             <Card
               title={review.data.title}
               description={review.data.description}
-              href={`/reviews/${review.slug}`}
+              href={`/reviews/${review.id}`}
               image={review.data.image}
               badge={`${review.data.rating}/5 ★`}
             />
@@ -79,7 +80,7 @@ const bestPicks = (await getCollection('best'))
             <Card
               title={pick.data.title}
               description={pick.data.description}
-              href={`/best/${pick.slug}`}
+              href={`/best/${pick.id}`}
               image={pick.data.image}
               badge={pick.data.category}
             />
@@ -99,7 +100,7 @@ const bestPicks = (await getCollection('best'))
             <Card
               title={post.data.title}
               description={post.data.description}
-              href={`/blog/${post.slug}`}
+              href={`/blog/${post.id}`}
               image={post.data.image}
               date={post.data.publishedAt}
             />

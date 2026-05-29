@@ -1,18 +1,19 @@
 ---
+export const prerender = true;
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import AdInArticle from '@/components/ads/AdInArticle.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const picks = await getCollection('best');
   return picks.map(pick => ({
-    params: { slug: pick.slug },
+    params: { slug: pick.id },
     props: { pick },
   }));
 }
 
 const { pick } = Astro.props;
-const { Content } = await pick.render();
+const { Content } = await render(pick);
 ---
 
 <LandingLayout
